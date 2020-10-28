@@ -118,4 +118,13 @@ class ExpenseController{
             
         });
     }
+
+    async getFilteredExpenses(parent,UserId,date1,date2,expenseController){
+       
+        let filteredExpenses=await this.service.post(url.concat('FilterExpenses&id='+UserId), {'date1':date1, 'date2':date2}); //return the array
+            clear();
+            //this.getExpensesView(parent,filteredExpenses,expenseController);
+            listExpenses(parent,filteredExpenses,expenseController,UserId); 
+        }
+
 }

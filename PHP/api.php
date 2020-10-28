@@ -84,6 +84,16 @@ if($method=='POST'){
             $expenseService->addCategory($name);
         break;
 
+        case 'FilterExpenses': 
+            $jsonBody=file_get_contents('php://input'); 
+            $json=json_decode($jsonBody,true); 
+            $date1=$json['date1']; 
+            $date2=$json['date2']; 
+            $UserId=$_GET['id']; //get the user id and pass it to the function in expenses Service
+
+            $expenseService->getExpensesFiltered($UserId,$date1,$date2); 
+        break; 
+
 
     }//swicth
 }

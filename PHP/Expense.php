@@ -305,4 +305,25 @@ class ExpenseService{
          }
     }
 
+    public function getExpensesFiltered($UserId,$date1,$date2){
+        $data = array();
+        $sqlQuery = "SELECT * FROM Expense as e WHERE e.date BETWEEN '$date1' AND '$date2' AND userId='$UserId'";
+        $result = $this->connection->query($sqlQuery);
+        if($result){
+            if($result->num_rows>0){
+                while($row = $result->fetch_assoc()){
+                    array_push($data, $row);
+                }
+            }
+            echo json_encode($data);
+        }
+        else{
+            $obj = new stdClass();
+            $obj->success = false;
+            $obj->message = 'Could Not Get Expenses: ' . $this->connection->error;
+            echo json_encode($obj);
+        }
+
+    }
+
 }

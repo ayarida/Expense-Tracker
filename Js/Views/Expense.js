@@ -6,11 +6,32 @@ function listExpenses(parent,list,expenseController,UserId){
     let maindiv=document.createElement('div'); 
     maindiv.setAttribute('class','table-title'); 
 
-    var h = document.createElement("h3"); // 
+    var h = document.createElement("h3"); 
     var t = document.createTextNode("Manage Expenses:");
     h.appendChild(t);
 
+    //create the div for two inputs date 1 and date2 
+    let FilterDateDiv=document.createElement('div');
+    FilterDateDiv.setAttribute('class','FilterDateDiv');
+
+    let date1Input=document.createElement('input'); 
+    date1Input.setAttribute('placeholder','Date1'); 
+    let date2Input=document.createElement('input'); 
+    date2Input.setAttribute('placeholder','Date2'); 
+
+    let filterButton=document.createElement('button'); 
+    filterButton.textContent="Filter";
+    filterButton.onclick=('click', ()=> {
+        expenseController.getFilteredExpenses(parent,UserId,date1Input.value,date2Input.value,expenseController);
+    })
+
+    FilterDateDiv.appendChild(date1Input); 
+    FilterDateDiv.appendChild(date2Input); 
+    FilterDateDiv.appendChild(filterButton);
+
     maindiv.appendChild(h);
+    maindiv.appendChild(FilterDateDiv);
+
 
     let tbody = document.createElement('tbody');
     tbody.setAttribute('class','table-hover');
@@ -36,10 +57,17 @@ function listExpenses(parent,list,expenseController,UserId){
     th4.textContent='Price'; 
     th4.setAttribute('class','theader');
 
+    //Date:
+    let th5=document.createElement('th'); 
+    th5.textContent='Date'; 
+    th5.setAttribute('class','theader');
+
     table.appendChild(th1); //name header
     table.appendChild(th3); //amount header 
-    table.appendChild(th4); //price header 
+    table.appendChild(th4); //price header
+    table.appendChild(th5); //date header 
     table.appendChild(th2); //actions header 
+    
 
     
     list.forEach((expense) => { 
@@ -65,6 +93,12 @@ function listExpenses(parent,list,expenseController,UserId){
         let spanPrice=document.createElement('span'); 
         spanPrice.innerHTML=expense['price'];
         td4.appendChild(spanPrice);
+
+        let td5=document.createElement('td'); 
+        td5.setAttribute('style','text-align:center'); 
+        let spanDate=document.createElement('span'); 
+        spanDate.innerHTML=expense['date']; 
+        td5.appendChild(spanDate);
 
         let td2=document.createElement('td');
 
@@ -105,6 +139,7 @@ function listExpenses(parent,list,expenseController,UserId){
         tr.appendChild(td1); 
         tr.appendChild(td3);
         tr.appendChild(td4);
+        tr.appendChild(td5);
         tr.appendChild(td2); 
         table.appendChild(tr);
     });
